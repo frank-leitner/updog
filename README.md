@@ -1,5 +1,5 @@
-![Version 1.4](http://img.shields.io/badge/version-v1.4-green.svg)
-![Python 3.8](http://img.shields.io/badge/python-3.8-blue.svg)
+![Version 2.0](http://img.shields.io/badge/version-v2.0-green.svg)
+![Python 3.11+](http://img.shields.io/badge/python-3.11+-blue.svg)
 [![MIT License](http://img.shields.io/badge/license-MIT%20License-blue.svg)](https://github.com/sc0tfree/updog/blob/master/LICENSE)
 [![sc0tfree Twitter](http://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/sc0tfree)
 
@@ -19,7 +19,20 @@ can set ad hoc SSL certificates and use HTTP basic auth.
 
 Install using pip:
 
-`pip3 install updog`
+`pip install updog`
+
+Or using pipx (recommended for CLI tools):
+
+`pipx install updog`
+
+For development:
+
+```bash
+git clone https://github.com/sc0tfree/updog.git
+cd updog
+poetry install
+poetry run updog
+```
 
 ## Usage
 
