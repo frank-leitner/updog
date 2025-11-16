@@ -39,6 +39,7 @@ def parse_arguments():
     parser.add_argument('--ssl-cert', type=str, default=None, help='Path to SSL certificate file')
     parser.add_argument('--ssl-key', type=str, default=None, help='Path to SSL key file')
     parser.add_argument('--cors', action='store_true', help='Enable CORS (Cross-Origin Resource Sharing)')
+    parser.add_argument('--hide-base-path', action='store_true', help='Hide the base directory path (show relative paths only)')
     parser.add_argument('--version', action='version', version='%(prog)s v'+VERSION)
 
     args = parser.parse_args()
@@ -119,8 +120,13 @@ def main():
             except PermissionError:
                 abort(403, 'Read Permission Denied: ' + requested_path)
 
+            # Hide base directory path if requested
+            display_path = requested_path
+            if args.hide_base_path:
+                display_path = requested_path[len(base_directory):] or '/'
+
             return render_template('home.html', files=directory_files, back=back,
-                                   directory=requested_path, is_subdirectory=is_subdirectory, version=VERSION)
+                                   directory=display_path, is_subdirectory=is_subdirectory, version=VERSION)
         else:
             return redirect('/')
 
@@ -136,7 +142,11 @@ def main():
             if 'file' not in request.files:
                 return redirect(request.referrer)
 
+            # Handle hidden base path mode
             path = request.form['path']
+            if args.hide_base_path:
+                path = base_directory + path
+            
             # Prevent file upload to paths outside of base directory
             if not is_valid_upload_path(path, base_directory):
                 return redirect(request.referrer)
